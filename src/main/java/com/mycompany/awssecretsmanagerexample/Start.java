@@ -85,24 +85,24 @@ public class Start {
      * Still not good because the connection login/password are in plain text.
      */
     private static void connectTwo() {
-        FileInputStream in = null;
+        FileInputStream fileInputStream = null;
         try {
             Properties properties = new Properties();
             String propFile = "src/main/resources/app.properties";
-            in = new FileInputStream(propFile);
-            properties.load(in);
+            fileInputStream = new FileInputStream(propFile);
+            properties.load(fileInputStream);
 
             String user = properties.getProperty("username");
             String password = properties.getProperty("password");
             System.out.println("User: " + user + " Password: " + password);
-            in.close();
+            fileInputStream.close();
         } catch (FileNotFoundException ex) {
             Logger.getLogger(Start.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             Logger.getLogger(Start.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             try {
-                in.close();
+                fileInputStream.close();
             } catch (IOException ex) {
                 Logger.getLogger(Start.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -115,19 +115,19 @@ public class Start {
      * Not good.  Because the connection string is in plain text.
      */
     private static void connectOne() {
-        Connection conn = null;
-        Statement stmt = null;
-        ResultSet rs = null;
+        Connection connection = null;
+        Statement statement = null;
+        ResultSet resultSet = null;
         try {
-            conn =
+            connection =
                DriverManager.getConnection("jdbc:mysql://localhost/comicotaku?" +
                                            "user=root&password=password");
 
             // Do something with the Connection
-            stmt = conn.createStatement();
-            rs = stmt.executeQuery("SELECT * FROM checkout");
-            while (rs.next()) {
-                System.out.println("Column 1 value: " + rs.getString(1));
+            statement = connection.createStatement();
+            resultSet = statement.executeQuery("SELECT * FROM checkout");
+            while (resultSet.next()) {
+                System.out.println("Column 1 value: " + resultSet.getString(1));
             }
         } catch (SQLException ex) {
             // handle any errors
@@ -135,23 +135,23 @@ public class Start {
             System.out.println("SQLState: " + ex.getSQLState());
             System.out.println("VendorError: " + ex.getErrorCode());
         } finally {
-            if (conn != null) {
+            if (connection != null) {
                 try {
-                    conn.close();
+                    connection.close();
                 } catch (SQLException ex) {
                     System.out.println(ex);
                 }
             }
-            if (stmt != null) {
+            if (statement != null) {
                 try {
-                    stmt.close();
+                    statement.close();
                 } catch (SQLException ex) {
                     System.out.println(ex);
                 }
             }
-            if (rs != null) {
+            if (resultSet != null) {
                 try {
-                    rs.close();
+                    resultSet.close();
                 } catch (SQLException ex) {
                     System.out.println(ex);
                 }
